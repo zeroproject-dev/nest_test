@@ -33,8 +33,7 @@ export class UsersController {
         password: null,
       });
 
-      // TODO: AQUI DEBERIA IR EL MANDADO DE EMAIL
-      const url = this.emailService.send(user.email);
+      const url = await this.emailService.send(user.email);
 
       return { url, user };
     } catch (error) {
