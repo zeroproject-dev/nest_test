@@ -3,8 +3,8 @@ import {
   Controller,
   HttpCode,
   HttpStatus,
-  Param,
   Post,
+  Query,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Record } from '@prisma/client/runtime/library';
@@ -16,16 +16,15 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   signIn(@Body() signInDto: Record<string, any>) {
-    console.log('akjsdhflkjah');
     return this.authService.signIn(signInDto.username, signInDto.password);
   }
 
   @Post('/register')
-  @HttpCode(HttpStatus.NO_CONTENT)
   completeRegister(
-    @Param('token') token: string,
+    @Query('token') token: string,
     @Body() passwordDto: Record<string, string>,
   ) {
-    // const { password } = passwordDto;
+    const { password } = passwordDto;
+    return this.authService.registerPassword(token, password);
   }
 }

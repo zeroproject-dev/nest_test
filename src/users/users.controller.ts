@@ -13,21 +13,30 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { EmailService } from 'src/email/email.service';
 
 @Controller({ version: '1', path: 'users' })
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly emailService: EmailService,
+  ) {}
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     const { role_id, ...rest } = createUserDto;
 
     try {
-      return await this.usersService.create({
+      const user = await this.usersService.create({
         ...rest,
         role: { connect: { id: role_id } },
         password: null,
       });
+
+      // TODO: AQUI DEBERIA IR EL MANDADO DE EMAIL
+      const url = this.emailService.send(user.email);
+
+      return { url, user };
     } catch (error) {
       throw new HttpException(
         'Error al crear el usuario',
