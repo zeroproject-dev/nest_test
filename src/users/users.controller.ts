@@ -9,11 +9,15 @@ import {
   ParseIntPipe,
   HttpException,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { EmailService } from 'src/email/email.service';
+import { EmailService } from '../email/email.service';
+import { JwtGuard } from '../auth/jwt.guard';
+import { Roles } from '../auth/roles.decorator';
+import { RoleGuard } from 'src/auth/role.guard';
 
 @Controller({ version: '1', path: 'users' })
 export class UsersController {
@@ -44,7 +48,10 @@ export class UsersController {
     }
   }
 
-  @Get() async findAll() {
+  @Get()
+  @Roles(1)
+  @UseGuards(JwtGuard, RoleGuard)
+  async findAll() {
     return await this.usersService.findAll({ where: { state: true } });
   }
 
