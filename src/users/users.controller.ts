@@ -15,9 +15,9 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { EmailService } from '../email/email.service';
-import { JwtGuard } from '../auth/jwt.guard';
+import { JwtGuard } from '../auth/guards/jwt.guard';
 import { Roles } from '../auth/roles.decorator';
-import { RoleGuard } from 'src/auth/role.guard';
+import { RoleGuard } from '../auth/guards/role.guard';
 
 @Controller({ version: '1', path: 'users' })
 export class UsersController {

@@ -6,13 +6,22 @@ import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import { PrismaModule } from 'src/prisma/prisma.module';
+import { GoogleStrategy } from './oauth/google.strategy';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, UsersService, PrismaService],
+  providers: [
+    AuthService,
+    UsersService,
+    PrismaService,
+    GoogleStrategy,
+    ConfigService,
+  ],
   imports: [
     UsersModule,
     PrismaModule,
+    ConfigModule.forRoot({}),
     JwtModule.register({
       global: true,
       secret: process.env['JWT_SECRET'],

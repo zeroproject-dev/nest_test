@@ -8,6 +8,7 @@ import { PrismaService } from './prisma/prisma.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { EmailService } from './email/email.service';
 import { EmailModule } from './email/email.module';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { EmailModule } from './email/email.module';
     AuthModule,
     PrismaModule,
     EmailModule,
+    PassportModule.register({ session: true }),
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService, EmailService],

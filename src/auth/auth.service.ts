@@ -14,6 +14,20 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  async validateUser(details: any) {
+    const user = await this.usersService.findOne({ email: details.email });
+    if (user) return user;
+
+    this.usersService.create({
+      email: details.email,
+      username: details.displayName,
+      ci: 100000,
+      name: details.displayName,
+      role: { connect: { id: 1 } },
+      state: true,
+    });
+  }
+
   async signIn(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findOne({ username });
 
